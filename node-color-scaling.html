@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--TODO h153-> 2px wide slider-elements, but only 1px wide before that -->
+    <!--TODO "ruler" not applicable & mouse drag difficult to implement-->
+    <meta charset="UTF-8">
+    <title>VMS node settings with init state</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- react -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.1/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react-dom.js"></script>
+    <!-- jsx syntax -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.1/JSXTransformer.js"></script>
+    <!-- jquery needed for bootstrap -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <style>
+        .bordered {
+            margin: 5px;
+            text-align: center;
+            color: #6a6d6a;
+            background-color: #f1f5f6;
+            max-width: 800px;
+            font-family: Helvetica, sans-serif;
+        }
+
+        .container {
+            margin-right: 10px;
+            margin-left: 10px;
+            width: 100%;
+        }
+
+        .prevent-text-highlight {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .glyphicon.glyphicon-remove.navi-icon {
+            top: 5px;
+            right: 5px;
+            float: right;
+        }
+
+        .padding-bottom {
+            padding-bottom: 20px;
+        }
+
+        .padding-bottom-large {
+            padding-bottom: 40px;
+        }
+
+        .padding-top {
+            padding-top: 30px;
+        }
+
+        .navi-vms-window-title {
+            font-size: 1.5em;
+        }
+
+        #scaler-title {
+            text-align: center;
+            font-size: 1em;
+        }
+
+        .hsl-selector-wrapper-default {
+            background-color: white;
+
+            padding-left: 5px;
+            padding-right: 5px;
+            margin-left: 5px;
+            margin-right: 5px;
+
+            cursor: move; /* fallback if pointer cursor is unsupported */
+            cursor: pointer;
+        }
+
+        .hsl-selector-wrapper-selected {
+            background-color: #6a6d6a;
+            color: #f1f5f6;
+
+            padding-left: 5px;
+            padding-right: 5px;
+            margin-left: 5px;
+            margin-right: 5px;
+
+            cursor: move; /* fallback if pointer cursor is unsupported */
+            cursor: pointer;
+        }
+
+        td {
+            position: relative;
+            padding: 0;
+        }
+
+        tr {
+            display: table-row;
+            vertical-align: inherit;
+            border-color: inherit;
+        }
+
+        tbody {
+            display: table-row-group;
+            vertical-align: middle;
+            border-color: inherit;
+        }
+
+        .tableslider {
+            width: 100%; /*inkább 80%-ban; vagy 585px;*/
+            border-collapse: collapse;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .slider-unit {
+            height: 25px;
+            padding: 0;
+        }
+
+        .selection-row {
+            width: 100%;
+            display: table;
+            margin-top: 20px;
+            padding-bottom: 10px;
+        }
+
+        .selection-row-high {
+            width: 100%;
+            display: table;
+            margin-top: 20px;
+            padding-bottom: 20px;
+        }
+
+        .selection-row-dots {
+            width: 100%;
+            display: table;
+        }
+
+        #last-selection-row {
+            padding-bottom: 40px;
+        }
+
+        .selection-element {
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+        input {
+            width: 55px;
+            padding-left: 4px;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .slider-element {
+            text-align: left;
+        }
+
+        .td-slider-init {
+            display: none;
+        }
+
+        .input-element {
+            min-width: 75px;
+            width: 90px;
+        }
+
+        .hsl-element {
+            width: 10px;
+            min-width: 10px;
+        }
+
+        .color-preview {
+            width: 55px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 26px;
+        }
+
+        #start-color-preview {
+        / / background-color: lightgreen;
+        }
+
+        #end-color-preview {
+        / / background-color: greenyellow;
+        }
+
+        .cancel-hsl-clm-color {
+            color: #f1f5f6;
+        }
+
+        /*pointers*/
+        .pointer_1 {
+            text-align: center;
+            display: none;
+            position: absolute;
+            cursor: move; /* fallback if pointer cursor is unsupported */
+            cursor: pointer;
+            top: -14px;
+            left: -2px;
+        }
+
+        .pointer_1 > div {
+            background-color: #6a6d6a;
+            color: #f1f5f6;
+            width: 40px;
+            position: absolute;
+            text-align: center;
+            top: -5px; /*41px;*/
+            left: -17px;
+            font: 14px verdana;
+        }
+
+        .pointer_2 {
+            text-align: center;
+            display: none;
+            position: absolute;
+            cursor: move; /* fallback if grab cursor is unsupported */
+            cursor: pointer;
+            top: -14px;
+            left: -2px;
+        }
+
+        .pointer_2 > div {
+            background-color: #6a6d6a;
+            color: #f1f5f6;
+            width: 40px;
+            position: absolute;
+            text-align: center;
+            top: 41px; /*-5px;*/
+            left: -17px;
+            font: 14px verdana;
+        }
+
+        i {
+            position: absolute;
+            z-index: 3;
+        }
+
+        .fa {
+            display: inline-block;
+            font: normal normal normal 14px/1 FontAwesome;
+            font-size: inherit;
+            text-rendering: auto;
+            -webkit-font-smoothing: antialiased;
+            transform: translate(0, 0);
+        }
+
+        i.fa-caret-down {
+            width: 0;
+            height: 0;
+            top: 11px; /*32 px*/
+            left: -2px;
+            border: solid 5px;
+            border-color: #6a6d6a transparent transparent transparent; /*transparent transparent #6a6d6a transparent*/
+        }
+
+        i.fa-caret-up {
+            width: 0;
+            height: 0;
+            top: 32px;
+            left: -2px;
+            border: solid 5px;
+            border-color: transparent transparent #6a6d6a transparent;
+        }
+
+        #preview-circle-line {
+            width: 100%;
+            text-align: -webkit-center;
+        }
+
+        .preview-circle-wrapper {
+            display: table-cell;
+            padding-left: 11px;
+            padding-right: 11px;
+        }
+
+        .preview-circle {
+            width: 15px;
+            height: 15px;
+            -webkit-border-radius: 25px;
+            -moz-border-radius: 25px;
+            border-radius: 25px;
+            background-color: #f1f5f6;
+            display: table-cell;
+        }
+
+        /*buttons*/
+        .navi-button {
+            border-radius: 0;
+            border: 0px;
+            -webkit-transition: all 0.3s;
+            -moz-transition: all 0.3s;
+            transition: all 0.3s;
+            min-height: 40px;
+            line-height: 40px;
+            padding: 0px 10px;
+
+            text-align: center;
+            margin-right: auto;
+            margin-left: auto;
+            font-weight: normal;
+        }
+
+        .navi-button.navi-button-dark {
+            background: #6a6d6a; /* === CHANGED === */
+            color: #f1f5f6;
+        }
+
+        .vms-window-button {
+            width: 70px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="bordered">
+    <div class="container">
+        <div class="padding-bottom padding-top navi-vms-window-title">
+            <span id="vms-window-title-span">Node color settings</span>
+        </div>
+
+        <div class="selection-row-dots">
+            <div class="selection-element hsl-element cancel-hsl-clm-color">o</div>
+
+            <div class="selection-element slider-element prevent-text-highlight" id="scaler-title">
+                <span><strong>Scale node attributes as &nbsp;</strong></span>
+
+                <span class="hsl-selector-wrapper-default" id="select-H-scaler"><strong>H</strong></span>
+
+                <span class="hsl-selector-wrapper-default" id="select-S-scaler"><strong>S</strong></span>
+
+                <span class="hsl-selector-wrapper-default" id="select-L-scaler"><strong>L</strong></span>
+
+                <span><strong>&nbsp;values</strong></span>
+            </div>
+        </div>
+
+        <div class="selection-row">
+            <div class="selection-element hsl-element cancel-hsl-clm-color">o</div>
+
+            <div class="selection-element input-element">
+                <div class="color-preview" id="start-color-preview"></div>
+            </div>
+
+            <div class="selection-element" id="preview-circle-line">
+                <div class="preview-circle-wrapper">
+                    <div class="preview-circle" id="circ-pre-0"></div>
+                </div>
+                <div class="preview-circle-wrapper">
+                    <div class="preview-circle" id="circ-pre-1"></div>
+                </div>
+                <div class="preview-circle-wrapper">
+                    <div class="preview-circle" id="circ-pre-2"></div>
+                </div>
+                <div class="preview-circle-wrapper">
+                    <div class="preview-circle" id="circ-pre-3"></div>
+                </div>
+                <div class="preview-circle-wrapper">
+                    <div class="preview-circle" id="circ-pre-4"></div>
+                </div>
+
+                <div class="preview-circle-wrapper">
+                    <div class="preview-circle" id="circ-pre-5"></div>
+                </div>
+                <div class="preview-circle-wrapper">
+                    <div class="preview-circle" id="circ-pre-6"></div>
+                </div>
+                <div class="preview-circle-wrapper">
+                    <div class="preview-circle" id="circ-pre-7"></div>
+                </div>
+                <div class="preview-circle-wrapper">
+                    <div class="preview-circle" id="circ-pre-8"></div>
+                </div>
+                <div class="preview-circle-wrapper">
+                    <div class="preview-circle" id="circ-pre-9"></div>
+                </div>
+
+                <div class="preview-circle-wrapper">
+                    <div class="preview-circle" id="circ-pre-10"></div>
+                </div>
+                <div class="preview-circle-wrapper">
+                    <div class="preview-circle" id="circ-pre-11"></div>
+                </div>
+                <div class="preview-circle-wrapper">
+                    <div class="preview-circle" id="circ-pre-12"></div>
+                </div>
+                <div class="preview-circle-wrapper">
+                    <div class="preview-circle" id="circ-pre-13"></div>
+                </div>
+                <div class="preview-circle-wrapper">
+                    <div class="preview-circle" id="circ-pre-14"></div>
+                </div>
+
+                <div class="preview-circle-wrapper">
+                    <div class="preview-circle" id="circ-pre-15"></div>
+                </div>
+            </div>
+
+            <div class="selection-element input-element">
+                <div class="color-preview" id="end-color-preview"></div>
+            </div>
+        </div>
+
+        <div class="selection-row-high">
+            <div class="selection-element hsl-element">
+                <strong>H</strong>
+            </div>
+
+            <div class="selection-element input-element">
+                <label for="input-start-node-hue-value"></label>
+                <input id="input-start-node-hue-value" type="number" min="0" max="360"/>
+            </div>
+
+            <div class="selection-element slider-element">
+                <table id="H-slider" class="tableslider">
+                    <tr>
+                        <td class="td-slider-init" id="slider-init-H"></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="selection-element input-element">
+                <label for="input-end-node-hue-value"></label>
+                <input id="input-end-node-hue-value" type="number" min="0" max="360"/>
+            </div>
+        </div>
+
+        <div class="selection-row-high">
+            <div class="selection-element hsl-element">
+                <strong>S</strong>
+            </div>
+
+            <div class="selection-element input-element">
+                <label for="input-start-node-sat-value"></label>
+                <input id="input-start-node-sat-value" type="number" min="0" max="100"/>
+            </div>
+
+            <div class="selection-element slider-element">
+                <table id="S-slider" class="tableslider">
+                    <tr>
+                        <td class="td-slider-init" id="slider-init-S"></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="selection-element input-element">
+                <label for="input-end-node-sat-value"></label>
+                <input id="input-end-node-sat-value" type="number" min="0" max="100" style="display:none"/>
+            </div>
+        </div>
+
+        <div class="selection-row-high" id="last-selection-row">
+            <div class="selection-element hsl-element">
+                <strong>L</strong>
+            </div>
+
+            <div class="selection-element input-element">
+                <label for="input-start-node-light-value"></label>
+                <input id="input-start-node-light-value" type="number" min="0" max="100"/>
+            </div>
+
+            <div class="selection-element slider-element">
+                <table id="L-slider" class="tableslider">
+                    <tr>
+                        <td class="td-slider-init" id="slider-init-L"></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="selection-element input-element">
+                <label for="input-end-node-light-value"></label>
+                <input id="input-end-node-light-value" type="number" min="0" max="100" style="display:none"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+
+    //======= GLOBAL STATES ======= GLOBAL STATES ======= GLOBAL STATES ======= GLOBAL STATES ======= GLOBAL STATES ======= GLOBAL STATES
+
+    let global_H1_set_val = 0;
+    let global_H2_set_val = 60;
+
+    let global_S1_set_val = 100;
+    let global_S2_set_val = 100;
+
+    let global_L1_set_val = 50;
+    let global_L2_set_val = 50;
+
+    let global_preview_background = ""; //set!!!
+
+    let global_active_H_pointer = 0;
+    let global_active_S_pointer = 0;
+    let global_active_L_pointer = 0;
+
+    let global_selected_scaler = "H";
+
+    let global_set_node_color_range_preview = "";
+
+    let global_last_changed_H = 1;
+
+    function H_pointerElement(pointerNum, id) {
+        return document.getElementById("huepointer" + pointerNum + "-" + id);
+    }
+
+    function S_pointerElement(pointerNum, id) {
+        return document.getElementById("satpointer" + pointerNum + "-" + id);
+    }
+
+    function L_pointerElement(pointerNum, id) {
+        return document.getElementById("lightpointer" + pointerNum + "-" + id);
+    }
+
+    function inputElement(inputPosition, hsl) {
+        return document.getElementById("input-" + inputPosition + "-node-" + hsl + "-value");
+    }
+
+    function scalerSelectorElement(hsl) {
+        return document.getElementById("select-" + hsl + "-scaler");
+    }
+
+
+    //===== NODE PREVIEW INIT ===== NODE PREVIEW INIT ===== NODE PREVIEW INIT ===== NODE PREVIEW INIT ===== NODE PREVIEW INIT ===== NODE PREVIEW INIT
+
+    function nodeColorPreviewInit_H() {
+        var numOfDots = document.querySelectorAll('.preview-circle').length; //16
+
+        let range = global_H2_set_val - global_H1_set_val;
+
+        let avg = range / (numOfDots - 1); // range / 15
+
+        for (let i = 0; i < numOfDots; i++) {
+            document.getElementById("circ-pre-" + i + "").setAttribute("style", "background-color:hsl(" + (global_H1_set_val + (avg * i)) + ", " + global_S1_set_val + "%, " + global_L1_set_val +
+                    "%)");
+        }
+    }
+
+    function nodeColorPreviewInit_S(h, s1, s2, l) {
+        var numOfDots = document.querySelectorAll('.preview-circle').length; //16
+
+        let range = s2 - s1;
+
+        let avg = range / (numOfDots - 1); // range / 15
+
+        for (let i = 0; i < numOfDots; i++) {
+            document.getElementById("circ-pre-" + i + "").setAttribute
+            ("style", "background-color:hsl(" + h + ", " + (s1 + (avg * i)) + "%, " + l + "%)");
+        }
+    }
+
+    function nodeColorPreviewInit_L(h, s, l1, l2) {
+        var numOfDots = document.querySelectorAll('.preview-circle').length; //16
+
+        let range = l2 - l1;
+
+        let avg = range / (numOfDots - 1); // range / 15
+
+        for (let i = 0; i < numOfDots; i++) {
+            document.getElementById("circ-pre-" + i + "").setAttribute
+            ("style", "background-color:hsl(" + h + ", " + s + "%, " + (l1 + (avg * i)) + "%)");
+        }
+    }
+
+    nodeColorPreviewInit_H();
+
+
+    //===== PREVIEW BOX INIT ===== PREVIEW BOX INIT ===== PREVIEW BOX INIT ===== PREVIEW BOX INIT ===== PREVIEW BOX INIT ===== PREVIEW BOX INIT
+    /*
+     function previewBox_1_Stats(h, s, l) {
+     document.getElementById("start-color-preview").setAttribute("style",
+     "background-color:hsl(" + h + ", " + s + "%, " + l + "%)");
+     }
+
+     previewBox_1_Stats(global_H1_set_val, global_S1_set_val, global_L1_set_val); //start preview box init
+
+     function previewBox_2_Stats(h, s, l) {
+     document.getElementById("end-color-preview").setAttribute("style",
+     "background-color:hsl(" + h + ", " + s + "%, " + l + "%)");
+     }
+
+     previewBox_2_Stats(global_H2_set_val, global_S2_set_val, global_L2_set_val); //end preview box init
+     */
+
+    //===== SELECTED SCALER INIT ===== SELECTED SCALER INIT ===== SELECTED SCALER INIT ===== SELECTED SCALER INIT ===== SELECTED SCALER INIT
+
+    scalerSelectorElement("H").setAttribute("class", "hsl-selector-wrapper-selected");
+
+    //===== H POINTER DISPLAY ===== H POINTER DISPLAY ===== H POINTER DISPLAY ===== H POINTER DISPLAY ===== H POINTER DISPLAY ===== H POINTER DISPLAY
+
+    function display_H1_pointer(id) {
+        H_pointerElement(1, id).setAttribute("style", "display:inline");
+        H_pointerElement(1, id).childNodes[0].setAttribute("style", "top:-5px");
+        H_pointerElement(1, id).childNodes[1].setAttribute("class", "fa-caret-down");
+        H_pointerElement(1, id).setAttribute("class", "pointer_1 hue");
+    }
+
+    function display_H2_pointer(id) {
+        H_pointerElement(2, id).setAttribute("style", "display:inline");
+        H_pointerElement(2, id).childNodes[0].setAttribute("style", "top:41px");
+        H_pointerElement(2, id).childNodes[1].setAttribute("class", "fa-caret-up");
+        H_pointerElement(2, id).setAttribute("class", "pointer_2 hue");
+    }
+
+    function displayBothHuePointers(id) {
+        display_H1_pointer(id);
+        display_H2_pointer(id);
+    }
+
+    function cancel_H1_pointer(id) {
+        H_pointerElement(1, id).setAttribute("style", "display:none");
+    }
+
+    function cancel_H2_pointer(id) {
+        H_pointerElement(2, id).setAttribute("style", "display:none");
+    }
+
+    function cancelBothHuePointers(id) {
+        cancel_H1_pointer(id);
+        cancel_H2_pointer(id);
+    }
+
+    //===== S POINTER DISPLAY ===== S POINTER DISPLAY ===== S POINTER DISPLAY ===== S POINTER DISPLAY ===== S POINTER DISPLAY ===== S POINTER DISPLAY
+
+    function display_S1_pointer(id) {
+        S_pointerElement(1, id).setAttribute("style", "display:inline");
+        S_pointerElement(1, id).childNodes[0].setAttribute("style", "top:-5px");
+        S_pointerElement(1, id).childNodes[1].setAttribute("class", "fa-caret-down");
+        S_pointerElement(1, id).setAttribute("class", "pointer_1 hue");
+    }
+
+    function display_S2_pointer(id) {
+        S_pointerElement(2, id).setAttribute("style", "display:inline");
+        S_pointerElement(2, id).childNodes[0].setAttribute("style", "top:41px");
+        S_pointerElement(2, id).childNodes[1].setAttribute("class", "fa-caret-up");
+        S_pointerElement(2, id).setAttribute("class", "pointer_2 hue");
+    }
+
+    function displayBothSatPointers(id) {
+        display_S1_pointer(id);
+        display_S2_pointer(id);
+    }
+
+    function cancel_S1_pointer(id) {
+        S_pointerElement(1, id).setAttribute("style", "display:none");
+    }
+
+    function cancel_S2_pointer(id) {
+        S_pointerElement(2, id).setAttribute("style", "display:none");
+    }
+
+    function cancelBothSatPointers(id) {
+        cancel_S1_pointer(id);
+        cancel_S2_pointer(id);
+    }
+
+    //===== L POINTER DISPLAY ===== L POINTER DISPLAY ===== L POINTER DISPLAY ===== L POINTER DISPLAY ===== L POINTER DISPLAY ===== L POINTER DISPLAY
+
+    function display_L1_pointer(id) {
+        L_pointerElement(1, id).setAttribute("style", "display:inline");
+        L_pointerElement(1, id).childNodes[0].setAttribute("style", "top:-5px");
+        L_pointerElement(1, id).childNodes[1].setAttribute("class", "fa-caret-down");
+        L_pointerElement(1, id).setAttribute("class", "pointer_1 hue");
+    }
+
+    function display_L2_pointer(id) {
+        L_pointerElement(2, id).setAttribute("style", "display:inline");
+        L_pointerElement(2, id).childNodes[0].setAttribute("style", "top:41px");
+        L_pointerElement(2, id).childNodes[1].setAttribute("class", "fa-caret-up");
+        L_pointerElement(2, id).setAttribute("class", "pointer_2 hue");
+    }
+
+    function displayBothLightPointers(id) {
+        display_L1_pointer(id);
+        display_L2_pointer(id);
+    }
+
+    function cancel_L1_pointer(id) {
+        L_pointerElement(1, id).setAttribute("style", "display:none");
+    }
+
+    function cancel_L2_pointer(id) {
+        L_pointerElement(2, id).setAttribute("style", "display:none");
+    }
+
+    function cancelBothLightPointers(id) {
+        cancel_L1_pointer(id);
+        cancel_L2_pointer(id);
+    }
+
+    //===== H POINTER ELEMENTS ===== H POINTER ELEMENTS ===== H POINTER ELEMENTS ===== H POINTER ELEMENTS ===== H POINTER ELEMENTS =====
+    function get_H1_pointer(h) {
+        return "<div class='pointer_1 hue' id='huepointer1-" + h + "' style='display:none'>" +
+                "<div class='prevent-text-highlight'>" + h + "</div>" +
+                "<i class='fa fa-caret-down'></i>" +
+                "</div>";
+    }
+
+    function get_H2_pointer(h) {
+        return "<div class='pointer_2 hue' id='huepointer2-" + h + "' style='display:none'>" +
+                "<div class='prevent-text-highlight'>" + h + "</div>" +
+                "<i class='fa fa-caret-up'></i>" +
+                "</div>";
+    }
+
+    //===== S POINTER ELEMENTS ===== S POINTER ELEMENTS ===== S POINTER ELEMENTS ===== S POINTER ELEMENTS ===== S POINTER ELEMENTS =====
+
+    function get_S1_pointer(s) {
+        return "<div class='pointer_1 sat' id='satpointer1-" + s + "' style='display:none'>" +
+                "<div class='prevent-text-highlight'>" + s + "</div>" +
+                "<i class='fa fa-caret-down'></i>" +
+                "</div>";
+    }
+
+    function get_S2_pointer(s) {
+        return "<div class='pointer_2 sat' id='satpointer2-" + s + "' style='display:none'>" +
+                "<div class='prevent-text-highlight'>" + s + "</div>" +
+                "<i class='fa fa-caret-up'></i>" +
+                "</div>";
+    }
+
+    //===== L POINTER ELEMENTS ===== L POINTER ELEMENTS ===== L POINTER ELEMENTS ===== L POINTER ELEMENTS ===== L POINTER ELEMENTS =====
+
+    function get_L1_pointer(l) {
+        return "<div class='pointer_1 light' id='lightpointer1-" + l + "' style='display:none'>" +
+                "<div class='prevent-text-highlight'>" + l + "</div>" +
+                "<i class='fa fa-caret-down'></i>" +
+                "</div>";
+    }
+
+    function get_L2_pointer(l) {
+        return "<div class='pointer_2 light' id='lightpointer2-" + l + "' style='display:none'>" +
+                "<div class='prevent-text-highlight'>" + l + "</div>" +
+                "<i class='fa fa-caret-up'></i>" +
+                "</div>";
+    }
+
+    //===== BUILD H SLIDER ===== BUILD H SLIDER ===== BUILD H SLIDER ===== BUILD H SLIDER ===== BUILD H SLIDER ===== BUILD H SLIDER =====
+
+    function appendH(h, s, l) {
+        //every td should get an id
+        var tdElement = "<td " +
+                "id=\'hue-slider-unit-" + h + "\' " +
+                "class=\'slider-unit slider-unit-h\' " +
+                "style=\'background-color:hsl(" + h + "," + s + "%," + l + "%);\'>" + get_H1_pointer(h) + get_H2_pointer(h) + "</td>";
+        document.getElementById("slider-init-H").insertAdjacentHTML('beforebegin', tdElement);
+    }
+
+    function buildHueSlider(s, l) {
+        for (let i = 0; i <= 360; i++) {
+            appendH(i, s, l)
+        }
+    }
+
+    buildHueSlider(global_S1_set_val, global_L1_set_val);
+
+    //===== BUILD S SLIDER ===== BUILD S SLIDER ===== BUILD S SLIDER ===== BUILD S SLIDER ===== BUILD S SLIDER ===== BUILD S SLIDER =====
+
+    function appendS(h, s, l) {
+        //every td should get an id
+        var tdElement = "<td " +
+                "id=\'sat-slider-unit-" + s + "\' " +
+                "class=\'slider-unit slider-unit-s\' " +
+                "style=\'background-color:hsl(" + h + "," + s + "%," + l + "%);\'>" + get_S1_pointer(s) + get_S2_pointer(s) + "</td>";
+        document.getElementById("slider-init-S").insertAdjacentHTML('beforebegin', tdElement);
+    }
+
+    function buildSatSlider(h, l) {
+        for (let i = 0; i <= 100; i++) {
+            appendS(h, i, l)
+        }
+    }
+
+    buildSatSlider(global_H1_set_val, global_L1_set_val);
+
+    //===== BUILD L SLIDER ===== BUILD L SLIDER ===== BUILD L SLIDER ===== BUILD L SLIDER ===== BUILD L SLIDER ===== BUILD L SLIDER =====
+
+    function appendL(h, s, l) {
+        //every td should get an id
+        var tdElement = "<td " +
+                "id=\'light-slider-unit-" + l + "\' " +
+                "class=\'slider-unit slider-unit-l\' " +
+                "style=\'background-color:hsl(" + h + "," + s + "%," + l + "%);\'>" + get_L1_pointer(l) + get_L2_pointer(l) + "</td>";
+        document.getElementById("slider-init-L").insertAdjacentHTML('beforebegin', tdElement);
+    }
+
+    function buildLightSlider(h, s) {
+        for (let i = 0; i <= 100; i++) {
+            appendL(h, s, i)
+        }
+    }
+
+    buildLightSlider(global_H1_set_val, global_S1_set_val);
+
+    //===== H POINTERS INIT ===== H POINTERS INIT ===== H POINTERS INIT ===== H POINTERS INIT ===== H POINTERS INIT ===== H POINTERS INIT
+
+    display_H1_pointer(global_H1_set_val);
+    display_H2_pointer(global_H2_set_val);
+
+    //===== S POINTER INIT ===== S POINTER INIT ===== S POINTER INIT ===== S POINTER INIT ===== S POINTER INIT ===== S POINTER INIT
+
+    display_S1_pointer(global_S1_set_val);
+
+    //===== L POINTER INIT ===== L POINTER INIT ===== L POINTER INIT ===== L POINTER INIT ===== L POINTER INIT ===== L POINTER INIT
+
+    display_L1_pointer(global_L1_set_val);
+
+    //TODO ---- DRAG ---- DRAG ---- DRAG ---- DRAG ---- DRAG ---- DRAG ---- DRAG ---- DRAG ---- DRAG ---- DRAG ---- DRAG ---- DRAG ----
+    H_pointerElement(1, global_H1_set_val).onmousedown = function (e) {
+        e = e || window.event;
+        var start = global_H1_set_val, diff = 0;
+        if (e.pageX) start = e.pageX;
+        else if (e.clientX) start = e.clientX;
+
+        H_pointerElement(1, global_H1_set_val).style.position = 'relative';
+        document.body.onmousemove = function (e) {
+            e = e || window.event;
+            var end = 0; //TODO
+            if (e.pageX) end = e.pageX;
+            else if (e.clientX) end = e.clientX;
+
+            diff = end - start;
+
+            if (diff >= 0 && diff <= 141) {
+                display_H1_pointer(diff);
+                cancel_H1_pointer(global_H1_set_val);
+                global_H1_set_val = diff; //TODO
+                document.getElementById("input-start-node-hue-value").value = global_H1_set_val;
+
+                //document.getElementById("vms-window-title-span").innerText = diff.toString();
+            } else if (diff > 141) {
+                display_H1_pointer(diff);
+                cancel_H1_pointer(global_H1_set_val);
+                global_H1_set_val = diff; //TODO
+
+                //document.getElementById("vms-window-title-span").innerText = diff.toString();
+            }
+        };
+        document.body.onmouseup = function () {
+            // do something with the action here
+            // elem has been moved by diff pixels in the X axis
+            H_pointerElement(1, global_H1_set_val).style.position = 'absolute';
+
+            global_H1_set_val = diff; //TODO
+
+            //document.getElementById("vms-window-title-span").innerText = global_H1_set_val.toString();
+
+            document.body.onmousemove = document.body.onmouseup = null; //TODO
+        };
+        //document.getElementById("vms-window-title-span").innerText = global_H1_set_val.toString();
+    };
+
+
+    //===== INPUT BOX INIT ===== INPUT BOX INIT ===== INPUT BOX INIT ===== INPUT BOX INIT ===== INPUT BOX INIT ===== INPUT BOX INIT =====
+
+    inputElement("start", "hue").defaultValue = global_H1_set_val;
+    inputElement("end", "hue").defaultValue = global_H2_set_val;
+
+    inputElement("start", "sat").defaultValue = global_S1_set_val;
+
+    inputElement("start", "light").defaultValue = global_L1_set_val;
+
+
+    //===== H-S-L BTNS ===== H-S-L BTNS ===== H-S-L BTNS ===== H-S-L BTNS ===== H-S-L BTNS ===== H-S-L BTNS ===== H-S-L BTNS
+
+    document.getElementById("select-H-scaler").onclick = function () {
+        selectedHueScaler();
+    };
+
+    document.getElementById("select-S-scaler").onclick = function () {
+        selectedSatScaler();
+    };
+
+    document.getElementById("select-L-scaler").onclick = function () {
+        selectedLightScaler();
+    };
+
+    function selectedHueScaler() {
+        global_selected_scaler = "H";
+
+        scalerSelectorElement("H").setAttribute("class", "hsl-selector-wrapper-selected");
+        scalerSelectorElement("S").setAttribute("class", "hsl-selector-wrapper-default");
+        scalerSelectorElement("L").setAttribute("class", "hsl-selector-wrapper-default");
+
+        //display / hide input boxes
+        inputElement('end', 'hue').setAttribute("style", "display:\"\"");
+        inputElement('end', 'sat').setAttribute("style", "display:none");
+        inputElement('end', 'light').setAttribute("style", "display:none");
+
+        //put previously set global value in SAT input box
+        inputElement('end', 'sat').defaultValue = global_H2_set_val;
+
+        //set preview box stats
+        //previewBox_1_Stats(global_H1_set_val, global_S1_set_val, global_L1_set_val);
+        //previewBox_2_Stats(global_H2_set_val, global_S1_set_val, global_L1_set_val);
+
+        //display / cancel  1st / 2nd pointer
+        display_H2_pointer(global_H2_set_val);
+        cancel_S2_pointer(global_S2_set_val);
+        cancel_L2_pointer(global_L2_set_val);
+
+        //set node preview
+        global_set_node_color_range_preview = setNodeColorRangePreview(global_H1_set_val, global_H2_set_val);
+
+        //set S-L slider color
+        //TODO
+    }
+
+    function selectedSatScaler() {
+        global_selected_scaler = "S";
+
+        scalerSelectorElement("H").setAttribute("class", "hsl-selector-wrapper-default");
+        scalerSelectorElement("S").setAttribute("class", "hsl-selector-wrapper-selected");
+        scalerSelectorElement("L").setAttribute("class", "hsl-selector-wrapper-default");
+
+        inputElement('end', 'hue').setAttribute("style", "display:none");
+        inputElement('end', 'sat').setAttribute("style", "display:\"\"");
+        inputElement('end', 'light').setAttribute("style", "display:none");
+
+        inputElement('end', 'sat').defaultValue = global_S2_set_val;
+
+        //previewBox_1_Stats(global_H1_set_val, global_S1_set_val, global_L1_set_val);
+        //previewBox_2_Stats(global_H1_set_val, global_S2_set_val, global_L1_set_val);
+
+        cancel_H2_pointer(global_H2_set_val);
+        display_S2_pointer(global_S2_set_val);
+        cancel_L2_pointer(global_L2_set_val);
+
+        //set node preview
+        global_set_node_color_range_preview = setNodeColorRangePreview(global_S1_set_val, global_S2_set_val);
+
+        //set S-L slider color
+        setColorRangeOf_SL_sliders(global_H1_set_val);
+    }
+
+    function selectedLightScaler() {
+        global_selected_scaler = "L";
+
+        scalerSelectorElement("H").setAttribute("class", "hsl-selector-wrapper-default");
+        scalerSelectorElement("S").setAttribute("class", "hsl-selector-wrapper-default");
+        scalerSelectorElement("L").setAttribute("class", "hsl-selector-wrapper-selected");
+
+        inputElement('end', 'hue').setAttribute("style", "display:none");
+        inputElement('end', 'sat').setAttribute("style", "display:none");
+        inputElement('end', 'light').setAttribute("style", "display:\"\"");
+
+        inputElement('end', 'light').defaultValue = global_L2_set_val;
+
+        //previewBox_1_Stats(global_H1_set_val, global_S1_set_val, global_L1_set_val);
+        //previewBox_2_Stats(global_H1_set_val, global_S1_set_val, global_L2_set_val);
+
+        cancel_H2_pointer(global_H2_set_val);
+        cancel_S2_pointer(global_S2_set_val);
+        display_L2_pointer(global_L2_set_val);
+
+        //set node preview
+        global_set_node_color_range_preview = setNodeColorRangePreview(global_L1_set_val, global_L2_set_val);
+
+        //set S-L slider color
+        setColorRangeOf_SL_sliders(global_H1_set_val);
+    }
+
+    function setNodeColorRangePreview(r1, r2) {
+        var numOfDots = document.querySelectorAll('.preview-circle').length; //16
+
+        let range = r2 - r1;
+
+        let avg = range / (numOfDots - 1); // range / 15
+
+        function scaleHSLattribute(i) {
+            return r1 + (avg * i);
+        }
+
+        if (global_selected_scaler == "H") {
+            for (let i = 0; i < numOfDots; i++) {
+                document.getElementById("circ-pre-" + i + "").setAttribute("style",
+                        "background-color:hsl(" + scaleHSLattribute(i) + ", " + global_S1_set_val + "%, " + global_L1_set_val + "%)");
+            }
+        } else if (global_selected_scaler == "S") {
+            for (let i = 0; i < numOfDots; i++) {
+                document.getElementById("circ-pre-" + i + "").setAttribute("style",
+                        "background-color:hsl(" + global_H1_set_val + ", " + scaleHSLattribute(i) + "%, " + global_L1_set_val + "%)");
+            }
+        } else if (global_selected_scaler = "L") {
+            for (let i = 0; i < numOfDots; i++) {
+                document.getElementById("circ-pre-" + i + "").setAttribute("style",
+                        "background-color:hsl(" + global_H1_set_val + ", " + global_S1_set_val + "%, " + scaleHSLattribute(i) + "%)");
+            }
+        } else {
+            for (let i = 0; i < numOfDots; i++) {
+                document.getElementById("circ-pre-" + i + "").setAttribute("style",
+                        "background-color:hsl(" + global_H1_set_val + ", " + global_S1_set_val + "%, " + global_L1_set_val + "%)");
+            }
+        }
+
+    }
+
+    //===== CHANGE INPUT VALUES ===== CHANGE INPUT VALUES ===== CHANGE INPUT VALUES ===== CHANGE INPUT VALUES ===== CHANGE INPUT VALUES
+
+    function setNodePreviewDuringInputBoxChange() {
+        if (global_selected_scaler == "H") {
+            setNodeColorRangePreview(global_H1_set_val, global_H2_set_val);
+        } else if (global_selected_scaler == "S") {
+            setNodeColorRangePreview(global_S1_set_val, global_S2_set_val);
+        } else if (global_selected_scaler == "L") {
+            setNodeColorRangePreview(global_L1_set_val, global_L2_set_val);
+        }
+    }
+
+    function changeColorRangeOf_SL_sliders() {
+        if (global_selected_scaler == "H") {
+            if (global_last_changed_H == 1) setColorRangeOf_SL_sliders(global_H1_set_val);
+            else if (global_last_changed_H == 2) setColorRangeOf_SL_sliders(global_H2_set_val);
+        } else {
+            setColorRangeOf_SL_sliders(global_H1_set_val);
+        }
+    }
+
+    function setColorRangeOf_SL_sliders(global_h) {
+        for (let i = 0; i <= 100; i++) {
+            //L is set to 50 for S scale
+            document.getElementById("sat-slider-unit-" + i + "").setAttribute("style", "background-color:hsl(" + global_h + "," + i + "%," + 50 + "%);");
+            //S is set to 100 for L scale otherwise it cancels out the vividness of the H-based coloring
+            document.getElementById("light-slider-unit-" + i + "").setAttribute("style", "background-color:hsl(" + global_h + "," + 100 + "%," + i + "%);");
+        }
+    }
+
+    //===== CHANGE H INPUT ===== CHANGE H INPUT ===== CHANGE H INPUT ===== CHANGE H INPUT ===== CHANGE H INPUT ===== CHANGE H INPUT =====
+
+    inputElement("start", "hue").oninput = function () {
+        global_last_changed_H = 1;
+
+        var getValue = inputElement("start", "hue").value; //get the value from the input box
+
+        display_H1_pointer(getValue); //display the new value's pointer
+        cancel_H1_pointer(global_H1_set_val); //cancel the old pointer
+
+        global_H1_set_val = parseInt(getValue); //update the global state
+
+        setNodePreviewDuringInputBoxChange();
+
+        setColorRangeOf_SL_sliders(global_H1_set_val);
+    };
+
+    inputElement("end", "hue").oninput = function () {
+        global_last_changed_H = 2;
+
+        var getValue = inputElement("end", "hue").value;
+
+        display_H2_pointer(getValue);
+        cancel_H2_pointer(global_H2_set_val);
+
+        global_H2_set_val = parseInt(getValue);
+
+        setNodePreviewDuringInputBoxChange();
+
+        setColorRangeOf_SL_sliders(global_H2_set_val);
+    };
+
+    //===== CHANGE S INPUT ===== CHANGE S INPUT ===== CHANGE S INPUT ===== CHANGE S INPUT ===== CHANGE S INPUT ===== CHANGE S INPUT =====
+
+    inputElement("start", "sat").oninput = function () {
+        var getValue = inputElement("start", "sat").value;
+        display_S1_pointer(getValue);
+        cancel_S1_pointer(global_S1_set_val);
+
+        global_S1_set_val = parseInt(getValue);
+
+        setNodePreviewDuringInputBoxChange();
+
+        changeColorRangeOf_SL_sliders();
+    };
+
+    inputElement("end", "sat").oninput = function () {
+        var getValue = inputElement("end", "sat").value;
+        display_S2_pointer(getValue);
+        cancel_S2_pointer(global_S2_set_val);
+
+        global_S2_set_val = parseInt(getValue);
+
+        setNodePreviewDuringInputBoxChange();
+
+        changeColorRangeOf_SL_sliders();
+    };
+
+    //===== CHANGE L INPUT ===== CHANGE S INPUT ===== CHANGE S INPUT ===== CHANGE S INPUT ===== CHANGE S INPUT ===== CHANGE S INPUT =====
+
+    inputElement("start", "light").oninput = function () {
+        var getValue = inputElement("start", "light").value;
+        display_L1_pointer(getValue);
+        cancel_L1_pointer(global_L1_set_val);
+
+        global_L1_set_val = parseInt(getValue);
+
+        setNodePreviewDuringInputBoxChange();
+
+        changeColorRangeOf_SL_sliders();
+    };
+
+    inputElement("end", "light").oninput = function () {
+        var getValue = inputElement("end", "light").value;
+        display_L2_pointer(getValue);
+        cancel_L2_pointer(global_L2_set_val);
+
+        global_L2_set_val = parseInt(getValue);
+
+        setNodePreviewDuringInputBoxChange();
+
+        changeColorRangeOf_SL_sliders();
+    };
+
+
+</script>
+
+</body>
+</html>
