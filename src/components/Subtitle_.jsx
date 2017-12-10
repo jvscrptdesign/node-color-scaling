@@ -5,7 +5,7 @@ import Button from './Button_.jsx';
 class Subtitle extends Component {
     render() {
         return (
-            <div className="row subtitle">
+            <div className="row subtitle" activehsl={this.props.activehsl}>
                 <Button 
                     text={this.props.isModeScale ? 'Scale' : 'Set'} 
                     btnActive={true} btntype="big" 
