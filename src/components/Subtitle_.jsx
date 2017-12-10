@@ -8,7 +8,8 @@ class Subtitle extends Component {
             <div className="row subtitle" activehsl={this.props.activehsl}>
                 <Button 
                     text={this.props.isModeScale ? 'Scale' : 'Set'} 
-                    btnActive={true} btntype="big" 
+                    btnActive={true} 
+                    btntype="big" 
                     onClick={this.props.scaleSetToggle} 
                     id="ScaleSet"/>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
