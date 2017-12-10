@@ -14,5 +14,5 @@
 - controlled components
 - finish colorbar, node etc components
 - state management (redux / flux)
-- responseive design: different layout for mobile
+- responsive design: different layout for mobile (2D)
 - add react bootstrap: https://react-bootstrap.github.io
