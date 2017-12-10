@@ -5,6 +5,7 @@
 - currently you can:
 click on the scale button to disable H, S, L buttons at the top, and to disable the second pointer
 click on either H, S or L button, which gives you access to the second pointer to set the range of the selected attr.
+
 TODO:
 - simplify the current architecture
 - lifecycle methods
