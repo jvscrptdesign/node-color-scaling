@@ -9,7 +9,7 @@ class Subtitle extends Component {
                 <Button 
                     text={this.props.isModeScale ? 'Scale' : 'Set'} 
                     btnActive={true} btntype="big" 
-                    onClick={this.props.scaleSet} 
+                    onClick={this.props.scaleSetToggle} 
                     id="ScaleSet"/>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <Button text='H' btnActive={this.props.activehsl==='H'} btntype="small" onClick={this.props.clickH} id="H"/>
