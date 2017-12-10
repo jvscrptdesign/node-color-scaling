@@ -1,0 +1,14 @@
+canvas {
+    width:360px;
+    height:25px;
+}
+
+.canvasWrapper {
+    height:25px;
+    position: relative;
+}
+
+.pointerSpace {
+    width:'75px';
+    height:'67px';
+}
