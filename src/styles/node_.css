@@ -1,0 +1,10 @@
+.node {
+    width: 12px;
+    height: 12px;
+    -webkit-border-radius: 25px;
+    -moz-border-radius: 25px;
+    border-radius: 25px;
+    background-color: red;
+    margin-right: 12px;
+    margin-left: 12px;
+}
