@@ -1,6 +1,6 @@
 # Node color scaling submenu
 - this is a submenu of a larger app, where you can set a color range of nodes in your graph
-- this React application was built by using create-react-app. More info [here](https://www.npmjs.com/package/create-react-app)
+- this React application was built by using create-react-app. More info [here](https://github.com/facebookincubator/create-react-app)
 - node-color-scaling.html is an older (HTML/CSS/JS) version
 - currently you can:
     - click on the scale button to disable H, S, L buttons at the top, and also to disable the second pointer; 
