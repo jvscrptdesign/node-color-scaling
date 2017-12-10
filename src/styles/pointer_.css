@@ -1,0 +1,51 @@
+.pointerUp, .pointerDown {
+    text-align: center;
+    cursor: move;
+    cursor: pointer;
+    top: -14px;
+    left: -2px;
+}
+
+.pointerUp > div, .pointerDown > div {
+    background-color: #6a6d6a;
+    color: #f1f5f6;
+    width: 40px;
+    position: absolute;
+    text-align: center;
+    font: 14px verdana;
+}
+
+i {
+    position: absolute;
+    z-index: 3;
+}
+
+.fa {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    transform: translate(0, 0);
+}
+
+i.fa-caret-down, i.fa-caret-up {
+    width: 0;
+    height: 0;
+    border: solid 5px;
+    left: 15px;
+    position: absolute;
+}
+i.fa-caret-down {
+    top: 17px;
+    border-color: #6a6d6a transparent transparent transparent;
+}
+
+i.fa-caret-up {
+    top: -10px;
+    border-color: transparent transparent #6a6d6a transparent;
+}
+
+.fa-caret-up:before, .fa-caret-down:before {
+    content: "";
+}
