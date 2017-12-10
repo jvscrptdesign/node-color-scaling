@@ -15,3 +15,4 @@
 - finish colorbar, node etc components
 - state management (redux / flux)
 - responseive design: different layout for mobile
+- add react bootstrap: https://react-bootstrap.github.io
