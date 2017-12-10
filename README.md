@@ -14,3 +14,11 @@ TODO:
 - state management (redux / flux)
 
 ![preview](https://cloud.githubusercontent.com/assets/25029653/22071927/00ae40fe-dda1-11e6-89ca-aaa2c82b5255.png)
+
+![preview](https://imgur.com/cMy9tt4)
+
+![preview]([Imgur](https://i.imgur.com/cMy9tt4.png))
+
+[Imgur](https://i.imgur.com/cMy9tt4.png)
+
+[url=https://imgur.com/cMy9tt4][img]http://i.imgur.com/cMy9tt4.png[/img][/url]
