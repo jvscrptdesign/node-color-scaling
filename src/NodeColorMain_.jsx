@@ -8,63 +8,31 @@ class NodeColors extends Component {
     constructor(){
         super();
         this.state = {
-            activehsl: "S",
+            activehsl: "H",
+            h1: 0,
+            h2: 70,
+            s1: 100,
+            s2: null,
+            l1: 50,
+            l2: null,
             isModeScale: true,
         }
         this.scaleSetHandler = this.scaleSetHandler.bind(this); 
-        this.click_H_handler = this.click_H_handler.bind(this); 
-        this.click_S_handler = this.click_S_handler.bind(this);
-        this.click_L_handler = this.click_L_handler.bind(this);
+        this.commonHSLhandler = this.commonHSLhandler.bind(this);
     }
 
     scaleSetHandler(e) {
         if(this.state.activehsl !== 'none'){
-            this.setState({
-                isModeScale: !this.state.isModeScale,
-                activehsl: 'none'
-            });
-        } else {
-            this.setState({
-                activehsl: 'none'
-            });
+            this.setState({ isModeScale: !this.state.isModeScale });
         }
+        this.setState({ activehsl: 'none' });
     }
 
-    click_H_handler(e) {
+    commonHSLhandler(e, hsl){
         e.stopPropagation();
-        if(this.state.activehsl !== 'H') {
+        if(this.state.activehsl !== hsl) {
             this.setState({
-                activehsl: "H",
-                isModeScale: true
-            });
-        } else {
-            this.setState({
-                activehsl: "none",
-                isModeScale: false
-            });
-        }
-    }
-
-    click_S_handler(e) {
-        e.stopPropagation();
-        if(this.state.activehsl !== 'S') {
-            this.setState({
-                activehsl: "S",
-                isModeScale: true
-            });
-        } else {
-            this.setState({
-                activehsl: "none",
-                isModeScale: false
-            });
-        }
-    }
-
-    click_L_handler(e) {
-        e.stopPropagation();
-        if(this.state.activehsl !== 'L') {
-            this.setState({
-                activehsl: "L",
+                activehsl: hsl,
                 isModeScale: true
             });
         } else {
@@ -86,9 +54,10 @@ class NodeColors extends Component {
                     activehsl={activehsl} 
                     isModeScale={this.state.isModeScale}
                     scaleSet={this.scaleSetHandler} 
-                    clickH={this.click_H_handler} 
-                    clickS={this.click_S_handler} 
-                    clickL={this.click_L_handler}/>
+                    clickH={(e) => this.commonHSLhandler(e, 'H')} 
+                    clickS={(e) => this.commonHSLhandler(e, 'S')} 
+                    clickL={(e) => this.commonHSLhandler(e, 'L')}
+                />
 
                 <NodeLine/>
 
