@@ -53,7 +53,7 @@ class NodeColors extends Component {
                 <Subtitle 
                     activehsl={activehsl} 
                     isModeScale={this.state.isModeScale}
-                    scaleSet={this.scaleSetHandler} 
+                    scaleSetToggle={this.scaleSetHandler} 
                     clickH={(e) => this.commonHSLhandler(e, 'H')} 
                     clickS={(e) => this.commonHSLhandler(e, 'S')} 
                     clickL={(e) => this.commonHSLhandler(e, 'L')}
