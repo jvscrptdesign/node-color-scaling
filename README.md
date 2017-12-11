@@ -1,5 +1,5 @@
 # Node color scaling submenu
-- this is a submenu of a larger app, where you can set a color range of nodes in your graph
+- this is a submenu of a larger app, where you can set a color range for nodes in your graph
 - this React application was built by using create-react-app. More info [here](https://github.com/facebookincubator/create-react-app)
 - node-color-scaling.html is an older (HTML/CSS/JS) version
 - currently you can:
