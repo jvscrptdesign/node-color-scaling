@@ -11,7 +11,6 @@
 #### TODO:
 - simplify the current architecture
 - lifecycle methods
-- controlled components
 - finish colorbar, node etc components
 - state management (redux / flux)
 - responsive design: different layout for mobile (2D)
