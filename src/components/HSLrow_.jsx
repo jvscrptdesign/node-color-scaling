@@ -25,6 +25,8 @@ class HSLrow extends Component {
                     row={this.props.row}
                     activeHval={this.props.activeHval}
                     activehsl={this.props.activehsl}
+                    HSL1={this.props.HSL1}
+                    HSL2={this.props.HSL2}
                 />
                 
                 {this.props.row===this.props.activehsl ? 
