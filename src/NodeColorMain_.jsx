@@ -9,8 +9,9 @@ class NodeColors extends Component {
         super();
         this.state = {
             activehsl: "H",
+            activeHval: 0,
             H1: 0,
-            H2: 70,
+            H2: 60,
             S1: 100,
             S2: 100,
             L1: 50,
@@ -23,8 +24,12 @@ class NodeColors extends Component {
     }
 
     scaleSetHandler(e) {
+        e.stopPropagation();
         if(this.state.activehsl !== 'none'){
-            this.setState({ isModeScale: !this.state.isModeScale });
+            this.setState({ 
+                isModeScale: !this.state.isModeScale,
+                activeHval: this.state.H1
+            });
         }
         this.setState({ activehsl: 'none' });
     }
@@ -34,24 +39,42 @@ class NodeColors extends Component {
         if(this.state.activehsl !== hsl) {
             this.setState({
                 activehsl: hsl,
-                isModeScale: true
+                isModeScale: true,
             });
+            if(hsl !== 'H') {
+                this.setState({
+                    activeHval: this.state.H1
+                });
+            }
         } else {
-            this.setState({
+            this.setState({ //when neither H, S nor L are clicked
                 activehsl: "none",
-                isModeScale: false
+                isModeScale: false,
+                activeHval: this.state.H1
             });
         }
     }
 
     HSLinputHandler(e){
+        e.stopPropagation();
         this.setState({
-            [e.target.id]: e.target.value //you can use hsltype or name in place of id
+            //can use name in place of id; ditch parseint if it messes up nodeStyle (H, S, L)
+            [e.target.id]: parseInt(e.target.value, 10), 
         });
+        if (e.target.id === 'H1' || e.target.id === 'H2') { //H1 or H2 is clicked
+            this.setState({ activeHval: e.target.value  }); 
+        }
     }
 
     render() {
-        let activehsl = this.state.activehsl;
+        let activehsl = this.state.activehsl,
+            isModeScale = this.state.isModeScale,
+            H1 = this.state.H1,
+            H2 = this.state.H2,
+            S1 = this.state.S1,
+            S2 = this.state.S2,
+            L1 = this.state.L1,
+            L2 = this.state.L2
 
         return (
             <div>
@@ -60,7 +83,7 @@ class NodeColors extends Component {
                     
                     <Subtitle 
                         activehsl={activehsl} 
-                        isModeScale={this.state.isModeScale}
+                        isModeScale={isModeScale}
                         scaleSetToggle={this.scaleSetHandler} 
                         clickH={e => this.HSLbuttonHandler(e, 'H')} 
                         clickS={e => this.HSLbuttonHandler(e, 'S')} 
@@ -69,28 +92,28 @@ class NodeColors extends Component {
 
                     <NodeLine/>
 
-                    <HSLrow row="H" HSL1={`${this.state.H1}`} HSL2={`${this.state.H2}`} activehsl={activehsl} max={360}
+                    <HSLrow row="H" HSL1={`${H1}`} HSL2={`${H2}`} activehsl={activehsl}
                             onChangeHSL1={e=>this.HSLinputHandler(e)} onChangeHSL2={e=>this.HSLinputHandler(e)}/>
 
-                    <HSLrow row="S" HSL1={`${this.state.S1}`} HSL2={`${this.state.S2}`} activehsl={activehsl} max={100} activeHval={0}
+                    <HSLrow row="S" HSL1={`${S1}`} HSL2={`${S2}`} activehsl={activehsl} activeHval={500}
                             onChangeHSL1={e=>this.HSLinputHandler(e)} onChangeHSL2={e=>this.HSLinputHandler(e)}/>
 
-                    <HSLrow row="L" HSL1={`${this.state.L1}`} HSL2={`${this.state.L2}`} activehsl={activehsl} max={100} activeHval={0}
+                    <HSLrow row="L" HSL1={`${L1}`} HSL2={`${L2}`} activehsl={activehsl} activeHval={500}
                             onChangeHSL1={e=>this.HSLinputHandler(e)} onChangeHSL2={e=>this.HSLinputHandler(e)}/>
 
                     <div className="title"/>
                 </div>
 
                 <div><u><strong>state:</strong></u></div>
-                <div>&nbsp;&nbsp;<strong>activeHSL:</strong> {this.state.activehsl}</div>
-                <div>&nbsp;&nbsp;<strong>mode:</strong> {this.state.isModeScale ? 'scale' : 'set'}</div>
-                <div>&nbsp;&nbsp;<strong>e.target.value:</strong> <div id="etarget"></div></div>
-                <div>&nbsp;&nbsp;<strong>H1:</strong> {this.state.H1}</div>
-                <div>&nbsp;&nbsp;<strong>H2:</strong> {this.state.H2}</div>
-                <div>&nbsp;&nbsp;<strong>S1:</strong> {this.state.S1}</div>
-                <div>&nbsp;&nbsp;<strong>S2:</strong> {this.state.S2}</div>
-                <div>&nbsp;&nbsp;<strong>L1:</strong> {this.state.L1}</div>
-                <div>&nbsp;&nbsp;<strong>L2:</strong> {this.state.L2}</div>
+                <div>&nbsp;&nbsp;<strong>activeHSL:</strong> {activehsl}</div>
+                <div>&nbsp;&nbsp;<strong>activeHval:</strong> {this.state.activeHval}</div>
+                <div>&nbsp;&nbsp;<strong>mode:</strong> {isModeScale ? 'scale' : 'set'}</div>
+                <div>&nbsp;&nbsp;<strong>H1:</strong> {H1}</div>
+                <div>&nbsp;&nbsp;<strong>H2:</strong> {H2}</div>
+                <div>&nbsp;&nbsp;<strong>S1:</strong> {S1}</div>
+                <div>&nbsp;&nbsp;<strong>S2:</strong> {S2}</div>
+                <div>&nbsp;&nbsp;<strong>L1:</strong> {L1}</div>
+                <div>&nbsp;&nbsp;<strong>L2:</strong> {L2}</div>
             </div>
         );
     }
