@@ -4,56 +4,52 @@ import PropTypes from 'prop-types';
 import '../styles/colorBar_.css';
 
 class ColorBar extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
+        this.mountColorBar = this.mountColorBar.bind(this);
+        this.styleColorBar = this.styleColorBar.bind(this);
         this.buildColorBar = this.buildColorBar.bind(this);
-        this.genericColorBar = this.genericColorBar.bind(this);
     }
 
-    genericColorBar = (grd, type) => { //@param: h, s, l later
+    mountColorBar(row, activeHval) {
+        const elem = document.getElementById(this.props.row);
+        const ctx = elem.getContext("2d");
+        const grd = ctx.createLinearGradient(0, 0, elem.width, 0);
+
+        this.buildColorBar(row, grd, activeHval);
+
+        ctx.fillStyle = grd;
+        ctx.fillRect(0, 0, elem.width, elem.height);
+    }
+
+    styleColorBar = (grd, type, activeHval) => {
         for(var i=0; i<=1; i+=0.01){
-            grd.addColorStop(i, `hsl(
-                                    ${type==='H' ? 360*i : this.props.activeHval}, 
-                                    ${type==='S' ? 100*i : 100}%, 
-                                    ${type==='L' ? 100*i : 50}%
-                                )`);
+            grd.addColorStop(i, `hsl(${type==='H' ? 360*i : activeHval},${type==='S' ? 100*i : 100}%,${type==='L' ? 100*i : 50}%)`);
         }
     }
 
-    buildColorBar = (row, grd) => {
-        switch (row) { //i u click H the other 2 are not changed!!! -> ERROR
+    buildColorBar = (row, grd, activeHval) => {
+        switch (row) {
             case 'H': 
-                /*for(let i=0; i<=1; i+=0.01){
-                    grd.addColorStop(i, `hsl(${360*i}, 100%, 50%)`);
-                }*/
-                this.genericColorBar(grd, 'H');
+                this.styleColorBar(grd, 'H', activeHval);
                 break;
             case 'S':
-                /*for(let j=0; j<=1; j+=0.01){
-                    grd.addColorStop(j, `hsl(${this.props.activeHval}, ${100*j}%, 50%)`);
-                }*/
-                this.genericColorBar(grd, 'S');
+                this.styleColorBar(grd, 'S', activeHval);
                 break;
             case 'L':
-                /*for(let k=0; k<=1; k+=0.01){
-                    grd.addColorStop(k, `hsl(${this.props.activeHval}, 100%, ${100*k}%)`);
-                }*/
-                this.genericColorBar(grd, 'L');                
+                this.styleColorBar(grd, 'L', activeHval);                
                 break;
             default:
                 throw new Error(`unknown row: ${this.props.row}`);
         }
     };
 
+    componentWillUpdate(nextProps, nextState) {
+        this.mountColorBar(this.props.row, nextProps.activeHval);
+    }
+
     componentDidMount() {
-        const elem = document.getElementById(this.props.row);
-        const ctx = elem.getContext("2d");
-        const grd = ctx.createLinearGradient(0, 0, elem.width, 0);
-
-        this.buildColorBar(this.props.row, grd);
-
-        ctx.fillStyle = grd;
-        ctx.fillRect(0, 0, elem.width, elem.height);
+        this.mountColorBar(this.props.row, this.props.activeHval);
     }
 
     render() {
