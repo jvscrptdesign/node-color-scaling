@@ -15,3 +15,4 @@
 - state management (redux / flux)
 - responsive design: different layout for mobile (2D)
 - add react bootstrap: https://react-bootstrap.github.io
+- scale more than 1 property
