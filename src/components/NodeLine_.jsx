@@ -44,7 +44,7 @@ class NodeLine extends Component {
             nodes.push(<Node 
                 h={activehsl==='H' ? this.getH(i) : H1} 
                 s={activehsl==='S' ? this.getS(i) : S1} 
-                l={activehsl==='L' ? this.getL(i) : L1} key={i} />);
+                l={activehsl==='L' ? this.getL(i) : L1} key={`node_${i}`} />);
         }
         return nodes;
     }
