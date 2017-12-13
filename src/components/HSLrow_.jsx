@@ -1,84 +1,54 @@
 import React, { Component } from 'react';
-import Pointer from './Pointer_.jsx';
 import PropTypes from 'prop-types';
-import '../styles/colorBar_.css';
+import ColorBar from './ColorBar_.jsx';
+import InputBox from './InputBox_.jsx';
 
-class ColorBar extends Component {
-    constructor(props) {
-        super(props);
-        this.mountColorBar = this.mountColorBar.bind(this);
-        this.styleColorBar = this.styleColorBar.bind(this);
-        this.buildColorBar = this.buildColorBar.bind(this);
-    }
-
-    mountColorBar(row, activeHval) {
-        const elem = document.getElementById(this.props.row);
-        const ctx = elem.getContext("2d");
-        const grd = ctx.createLinearGradient(0, 0, elem.width, 0);
-
-        this.buildColorBar(row, grd, activeHval);
-
-        ctx.fillStyle = grd;
-        ctx.fillRect(0, 0, elem.width, elem.height);
-    }
-
-    styleColorBar = (grd, type, activeHval) => {
-        for(var i=0; i<=1; i+=0.01){
-            grd.addColorStop(i, `hsl(${type==='H' ? 360*i : activeHval},${type==='S' ? 100*i : 100}%,${type==='L' ? 100*i : 50}%)`);
-        }
-    }
-
-    buildColorBar = (row, grd, activeHval) => {
-        switch (row) {
-            case 'H': 
-                this.styleColorBar(grd, 'H', activeHval);
-                break;
-            case 'S':
-                this.styleColorBar(grd, 'S', activeHval);
-                break;
-            case 'L':
-                this.styleColorBar(grd, 'L', activeHval);                
-                break;
-            default:
-                throw new Error(`unknown row: ${this.props.row}`);
-        }
-    };
-
-    componentWillUpdate(nextProps, nextState) {
-        this.mountColorBar(this.props.row, nextProps.activeHval);
-    }
-
-    componentDidMount() {
-        this.mountColorBar(this.props.row, this.props.activeHval);
-    }
-
+class HSLrow extends Component {
     render() {
+        let inputSpace = {
+            width:'75px',
+            height:'67px'    
+        }
+
         return (
-            <div>
-                <div className="pointerRow">
-                    <Pointer pType="down" HSL={this.props.HSL1}/>
-                </div>
+            <div className="row" row={this.props.row}>
+                <div className="colorSectionLabel">{this.props.row}&nbsp;&nbsp;</div>
+                <InputBox 
+                    row={this.props.row}
+                    defaultValue={this.props.HSL1}
+                    onChange={this.props.onChangeHSL1}
+                    //TODO: too many properties with the same value -> choose one
+                    name={`${this.props.row}1`}
+                    id={`${this.props.row}1`}/>
 
-                <div className="canvasWrapper">
-                    <canvas id={this.props.row} row={this.props.row}>
-                    download a modern browser</canvas>
-                </div>
-
-                <div className="pointerRow">
-                    {this.props.row===this.props.activehsl ? 
-                        <Pointer pType="up" HSL={this.props.HSL2}/> : <div className="pointerSpace"></div>}
-                </div>
+                <ColorBar
+                    row={this.props.row}
+                    activeHval={this.props.activeHval}
+                    activehsl={this.props.activehsl}
+                    HSL1={this.props.HSL1}
+                    HSL2={this.props.HSL2}
+                />
+                
+                {this.props.row===this.props.activehsl ? 
+                    <InputBox 
+                        row={this.props.row}
+                        defaultValue={this.props.HSL2}
+                        onChange={this.props.onChangeHSL2}
+                        //TODO: too many properties with the same value -> choose one
+                        name={`${this.props.row}2`}
+                        id={`${this.props.row}2`}/> : 
+                    <div style={ inputSpace }></div>}
             </div>
         );
     }
 }
 
-ColorBar.propTypes = {
-    activeHval: PropTypes.number, //string?, TODO: required only if this.props.row=S || L
+HSLrow.propTypes = {
     row: PropTypes.oneOf(['H', 'S', 'L']).isRequired,
+    HSL1: PropTypes.string.isRequired, // :S
+    HSL2: PropTypes.string, // :S
+    activeHval: PropTypes.number, //only for S, L rows
     activehsl: PropTypes.oneOf(['H', 'S', 'L', 'none']).isRequired,
-    HSL1: PropTypes.string.isRequired,
-    HSL2: PropTypes.string.isRequired
 }
 
-export default ColorBar;
+export default HSLrow;
