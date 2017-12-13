@@ -45,8 +45,8 @@ class HSLrow extends Component {
 
 HSLrow.propTypes = {
     row: PropTypes.oneOf(['H', 'S', 'L']).isRequired,
-    HSL1: PropTypes.string.isRequired, // :S
-    HSL2: PropTypes.string, // :S
+    HSL1: PropTypes.number.isRequired,
+    HSL2: PropTypes.number,
     activeHval: PropTypes.number, //only for S, L rows
     activehsl: PropTypes.oneOf(['H', 'S', 'L', 'none']).isRequired,
 }
