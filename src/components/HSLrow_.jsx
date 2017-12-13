@@ -14,7 +14,7 @@ class HSLrow extends Component {
             <div className="row" row={this.props.row}>
                 <div className="colorSectionLabel">{this.props.row}&nbsp;&nbsp;</div>
                 <InputBox 
-                    row={this.props.row} 
+                    row={this.props.row}
                     defaultValue={this.props.HSL1}
                     onChange={this.props.onChangeHSL1}
                     //TODO: too many properties with the same value -> choose one
