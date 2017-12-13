@@ -68,15 +68,7 @@ class NodeColors extends Component {
     }
 
     render() {
-        let activehsl = this.state.activehsl,
-            activeHval = this.state.activeHval,
-            isModeScale = this.state.isModeScale,
-            H1 = this.state.H1,
-            H2 = this.state.H2,
-            S1 = this.state.S1,
-            S2 = this.state.S2,
-            L1 = this.state.L1,
-            L2 = this.state.L2
+        let { activehsl, activeHval, isModeScale, H1, H2, S1, S2, L1, L2 } = this.state;
 
         return (
             <div>
