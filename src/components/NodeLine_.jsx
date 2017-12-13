@@ -18,7 +18,7 @@ class NodeLine extends Component {
     getH(i) {
         let H1 = this.props.H1,
             H2 = this.props.H2,
-            hRange = H2 > H1 ? H2 - H1 : H1 - H2,
+            hRange = H2 - H1,
             hAvg = hRange / this.state.numOfNodes;
 
         return H1 + hAvg * i;
@@ -27,7 +27,7 @@ class NodeLine extends Component {
     getS(i) {
         let S1 = this.props.S1,
             S2 = this.props.S2,
-            sRange = S2 > S1 ? S2 - S1 : S1 - S2,
+            sRange = S2 - S1,
             sAvg = sRange / this.state.numOfNodes;
 
         return S1 + sAvg * i;
@@ -36,7 +36,7 @@ class NodeLine extends Component {
     getL(i) {
         let L1 = this.props.L1,
             L2 = this.props.L2,
-            lRange = L2 > L1 ? L2 - L1 : L1 - L2,
+            lRange = L2 - L1,
             lAvg = lRange / this.state.numOfNodes;
 
         return L1 + lAvg * i;
