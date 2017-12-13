@@ -62,7 +62,7 @@ class NodeColors extends Component {
             [e.target.id]: parseInt(e.target.value, 10)
         });
         if (e.target.id === 'H1' || e.target.id === 'H2') { //H1 or H2 is changed
-            this.setState({ activeHval: parseInt(e.target.value, 10)  }); //TODO: cant handle colorbar change
+            this.setState({ activeHval: parseInt(e.target.value, 10)  });
         }
     }
 
