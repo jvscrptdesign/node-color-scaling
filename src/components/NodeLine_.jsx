@@ -14,32 +14,26 @@ class NodeLine extends Component {
         this.getL = this.getL.bind(this);
         this.buildNodeLine = this.buildNodeLine.bind(this);
     }
-
+    //TODO: recognize HSL btn, and scale/set btn changes
     getH(i) {
-        let H1 = this.props.H1,
-            H2 = this.props.H2,
-            hRange = H2 - H1,
+        let hRange = this.props.H2 - this.props.H1,
             hAvg = hRange / this.state.numOfNodes;
 
-        return H1 + hAvg * i;
+        return this.props.H1 + hAvg * i;
     }
 
     getS(i) {
-        let S1 = this.props.S1,
-            S2 = this.props.S2,
-            sRange = S2 - S1,
+        let sRange = this.props.S2 - this.props.S1,
             sAvg = sRange / this.state.numOfNodes;
 
-        return S1 + sAvg * i;
+        return this.props.S1 + sAvg * i;
     }
 
     getL(i) {
-        let L1 = this.props.L1,
-            L2 = this.props.L2,
-            lRange = L2 - L1,
+        let lRange = this.props.L2 - this.props.L1,
             lAvg = lRange / this.state.numOfNodes;
 
-        return L1 + lAvg * i;
+        return this.props.L1 + lAvg * i;
     }
 
     buildNodeLine() {
