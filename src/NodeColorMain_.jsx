@@ -91,7 +91,7 @@ class NodeColors extends Component {
                         clickL={e => this.HSLbuttonHandler(e, 'L')}
                     />
 
-                    <NodeLine/>
+                    <NodeLine H1={H1} H2={H2} S1={S1} S2={S2} L1={L1} L2={L2} activehsl={activehsl}/>
 
                     <HSLrow row="H" HSL1={`${H1}`} HSL2={`${H2}`} activehsl={activehsl} activeHval={activeHval}
                             onChangeHSL1={e=>this.HSLinputHandler(e)} onChangeHSL2={e=>this.HSLinputHandler(e)}/>
