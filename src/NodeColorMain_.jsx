@@ -10,7 +10,7 @@ class NodeColors extends Component {
         super();
         this.state = {
             activehsl: "H",
-            activeHval: 0,
+            activeHval:50,
             H1: 50,
             H2: 200,
             S1: 100,
