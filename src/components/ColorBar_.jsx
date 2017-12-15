@@ -8,7 +8,6 @@ class ColorBar extends Component {
         super(props);
         this.mountColorBar = this.mountColorBar.bind(this);
         this.styleColorBar = this.styleColorBar.bind(this);
-        this.buildColorBar = this.buildColorBar.bind(this);
     }
 
     mountColorBar(row, activeHval) {
@@ -16,7 +15,7 @@ class ColorBar extends Component {
         const ctx = elem.getContext("2d");
         const grd = ctx.createLinearGradient(0, 0, elem.width, 0);
 
-        this.buildColorBar(row, grd, activeHval);
+        this.styleColorBar(grd, this.props.row, activeHval);
 
         ctx.fillStyle = grd;
         ctx.fillRect(0, 0, elem.width, elem.height);
@@ -27,22 +26,6 @@ class ColorBar extends Component {
             grd.addColorStop(i, `hsl(${type==='H' ? 360*i : activeHval},${type==='S' ? 100*i : 100}%,${type==='L' ? 100*i : 50}%)`);
         }
     }
-
-    buildColorBar = (row, grd, activeHval) => {
-        switch (row) {
-            case 'H': 
-                this.styleColorBar(grd, 'H', activeHval);
-                break;
-            case 'S':
-                this.styleColorBar(grd, 'S', activeHval);
-                break;
-            case 'L':
-                this.styleColorBar(grd, 'L', activeHval);                
-                break;
-            default:
-                throw new Error(`unknown row: ${this.props.row}`);
-        }
-    };
 
     componentWillUpdate(nextProps, nextState) {
         this.mountColorBar(this.props.row, nextProps.activeHval);
@@ -77,8 +60,8 @@ ColorBar.propTypes = {
     activeHval: PropTypes.number, //string?, TODO: required only if this.props.row=S || L
     row: PropTypes.oneOf(['H', 'S', 'L']).isRequired,
     activehsl: PropTypes.oneOf(['H', 'S', 'L', 'none']).isRequired,
-    HSL1: PropTypes.string.isRequired,
-    HSL2: PropTypes.string.isRequired
+    HSL1: PropTypes.number.isRequired,
+    HSL2: PropTypes.number.isRequired
 }
 
 export default ColorBar;
