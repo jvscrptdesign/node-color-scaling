@@ -11,7 +11,7 @@
 #### TODO:
 - simplify the current architecture
 - lifecycle methods
-- finish colorbar, node etc components
+- link pointer to colorbar
 - state management (redux / flux)
 - responsive design: different layout for mobile (2D)
 - https://react-bootstrap.github.io
