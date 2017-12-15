@@ -6,9 +6,9 @@ class Pointer extends Component {
     render() {
         return (
             <div 
-                className={this.props.pType==='up' ? "pointerUp" : "pointerDown"}
+                className={`pointer${this.props.pType}`}
                 type={this.props.pType}>
-                <div>{this.props.HSL}<i className={this.props.pType==='up' ? "fa-caret-up" : "fa-caret-down"}/></div>
+                <div>{this.props.HSL}<i className={`fa-caret-${this.props.pType}`}/></div>
             </div>
         );
     }
@@ -16,7 +16,7 @@ class Pointer extends Component {
 
 Pointer.propTypes = {
     pType: PropTypes.oneOf(['up', 'down']).isRequired,
-    HSL: PropTypes.string.isRequired
+    HSL: PropTypes.number.isRequired
 }
 
 export default Pointer;
