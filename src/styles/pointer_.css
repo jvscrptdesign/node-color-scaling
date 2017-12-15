@@ -1,4 +1,4 @@
-.pointerUp, .pointerDown {
+.pointerup, .pointerdown {
     text-align: center;
     cursor: move;
     cursor: pointer;
@@ -6,7 +6,7 @@
     left: -2px;
 }
 
-.pointerUp > div, .pointerDown > div {
+.pointerup > div, .pointerdown > div {
     background-color: #6a6d6a;
     color: #f1f5f6;
     width: 40px;
