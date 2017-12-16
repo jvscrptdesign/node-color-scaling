@@ -8,6 +8,7 @@ import '../styles/HSLrow_.css';
 class HSLrow extends Component {
     render() {
         let {row, HSL1, HSL2, onChangeHSL1, onChangeHSL2, activeHval, activehsl} = this.props;
+        let isVisible = row===activehsl ? "" : "hidden";
 
         return (
             <div className="HSLrow">
@@ -39,11 +40,11 @@ class HSLrow extends Component {
                         //TODO: too many properties with the same value -> choose one
                         name={`${row}2`}
                         id={`${row}2`}
-                        visibility={row===activehsl ? "" : "hidden"}/>
+                        visibility={isVisible}/>
                 </div>
 
                 <div className="pointerRow">
-                    <Pointer pType="up" HSL={HSL2} visibility={row===activehsl ? "" : "hidden"} row={row}/>
+                    <Pointer pType="up" HSL={HSL2} visibility={isVisible} row={row}/>
                 </div>
             </div>
         );
