@@ -10,7 +10,7 @@ class ColorBar extends Component {
         this.styleColorBar = this.styleColorBar.bind(this);
     }
 
-    mountColorBar(row, activeHval) {
+    mountColorBar(activeHval) {
         const elem = document.getElementById(this.props.row);
         const ctx = elem.getContext("2d");
         const grd = ctx.createLinearGradient(0, 0, elem.width, 0);
@@ -28,11 +28,11 @@ class ColorBar extends Component {
     }
 
     componentWillUpdate(nextProps, nextState) {
-        this.mountColorBar(this.props.row, nextProps.activeHval);
+        this.mountColorBar(nextProps.activeHval);
     }
 
     componentDidMount() {
-        this.mountColorBar(this.props.row, this.props.activeHval);
+        this.mountColorBar(this.props.activeHval);
     }
 
     render() {
