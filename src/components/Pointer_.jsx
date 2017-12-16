@@ -4,12 +4,14 @@ import '../styles/pointer_.css';
 
 class Pointer extends Component {
     render() {
+        let {pType, visibility, HSL} = this.props;
+
         return (
             <div 
-                className={`pointer${this.props.pType}`}
-                type={this.props.pType}
-                style={{visibility: `${this.props.visibility}`}}>
-                <div>{this.props.HSL}<i className={`fa-caret-${this.props.pType}`} style={{visibility: `${this.props.visibility}`}}/></div>
+                className={`pointer${pType}`}
+                type={pType}
+                style={{visibility: `${visibility}`}}>
+                <div>{HSL}<i className={`fa-caret-${pType}`} style={{visibility: `${visibility}`}}/></div>
             </div>
         );
     }
