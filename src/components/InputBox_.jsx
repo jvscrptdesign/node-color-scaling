@@ -5,9 +5,7 @@ import '../styles/inputBox_.css';
 class InputBox extends Component {
     render() {
         return (
-            <div className="inputBoxWrapper">
-                <div className="pointerRow"/>
-                <input 
+                <div><input 
                     type="number" 
                     min="0"
                     max={this.props.row==='H' ? 360 : 100}
@@ -17,16 +15,15 @@ class InputBox extends Component {
                     //TODO: too many properties with the same value -> choose one
                     name={this.props.name}
                     id={this.props.id}
-                    className="inputBox"/>
-            </div>
+                    className="inputBox"
+                    style={{visibility: `${this.props.visibility}`}}/></div>
         );
     }
 }
 
 InputBox.propTypes = {
     row: PropTypes.oneOf(['H', 'S', 'L']).isRequired,
-    defaultValue: PropTypes.string.isRequired, // :S
-
+    defaultValue: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
     id: PropTypes.oneOf(['H1', 'H2', 'S1', 'S2', 'L1', 'L2']).isRequired,
 }
