@@ -4,17 +4,16 @@ import '../styles/button_.css';
 
 class Button extends Component {
     render() {
-        let isActive = this.props.btnActive ? "btnActive" : "btnDefault";
-        let btnType = this.props.btntype==="big" ? "btnBig" : "btnSmall";
+        let {btnActive, btntype, onClick, text} = this.props;
+        let isActive = btnActive ? "btnActive" : "btnDefault";
+        let btnType = btntype==="big" ? "btnBig" : "btnSmall";
 
         return (
             <div className="buttonWrapper">
                 <div 
                     className={`btn_ ${isActive} ${btnType}`}
-                    btntype={this.props.btntype}
-                    onClick={this.props.onClick}>
-                        {this.props.text}
-                </div>
+                    btntype={btntype}
+                    onClick={onClick}>{text}</div>
             </div>
         );
     }
