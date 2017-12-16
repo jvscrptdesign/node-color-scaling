@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Pointer from './Pointer_.jsx';
 import PropTypes from 'prop-types';
 import '../styles/colorBar_.css';
 
@@ -37,21 +36,8 @@ class ColorBar extends Component {
 
     render() {
         return (
-            <div>
-                <div className="pointerRow">
-                    <Pointer pType="down" HSL={this.props.HSL1}/>
-                </div>
-
-                <div className="canvasWrapper">
-                    <canvas id={this.props.row} row={this.props.row}>
-                    download a modern browser</canvas>
-                </div>
-
-                <div className="pointerRow">
-                    {this.props.row===this.props.activehsl ? 
-                        <Pointer pType="up" HSL={this.props.HSL2}/> : <div className="pointerSpace"></div>}
-                </div>
-            </div>
+                <canvas id={this.props.row} row={this.props.row}>
+                download a modern browser</canvas>
         );
     }
 }
