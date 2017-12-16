@@ -1,34 +1,36 @@
 import React, { Component } from 'react';
-import '../styles/pointer_.css';
+import PropTypes from 'prop-types';
 
 class State extends Component {
     render() {
+        let {activehsl, activeHval, isModeScale, H1, H2, S1, S2, L1, L2} = this.props;
+
         return (
             <div>
                 <div><u><strong>state:</strong></u></div>
-                <div>&nbsp;&nbsp;<strong>activeHSL:</strong> {this.props.activehsl}</div>
-                <div>&nbsp;&nbsp;<strong>activeHval:</strong> {this.props.activeHval}</div>
-                <div>&nbsp;&nbsp;<strong>mode:</strong> {this.props.isModeScale ? 'scale' : 'set'}</div>
+                <div>&nbsp;&nbsp;<strong>activeHSL:</strong> {activehsl}</div>
+                <div>&nbsp;&nbsp;<strong>activeHval:</strong> {activeHval}</div>
+                <div>&nbsp;&nbsp;<strong>mode:</strong> {isModeScale ? 'scale' : 'set'}</div>
 
                 <table>
                     <tbody>
                         <tr>
                             <td><strong>&nbsp;&nbsp;H1:</strong></td>
-                            <td>{this.props.H1}</td>
+                            <td>{H1}</td>
                             <td><strong>H2:</strong></td>
-                            <td>{this.props.H2}</td>
+                            <td>{H2}</td>
                         </tr>
                         <tr>
                             <td><strong>&nbsp;&nbsp;S1:</strong></td>
-                            <td>{this.props.S1}</td>
+                            <td>{S1}</td>
                             <td><strong>S2:</strong></td>
-                            <td>{this.props.S2}</td>
+                            <td>{S2}</td>
                         </tr>
                         <tr>
                             <td><strong>&nbsp;&nbsp;L1:</strong></td>
-                            <td>{this.props.L1}</td>
+                            <td>{L1}</td>
                             <td><strong>L2:</strong></td>
-                            <td>{this.props.L2}</td>
+                            <td>{L2}</td>
                         </tr>
                     </tbody>
                 </table>
