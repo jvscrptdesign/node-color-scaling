@@ -10,10 +10,10 @@
 
 #### TODO:
 - simplify the current architecture
-- lifecycle methods
-- link pointer to colorbar
+- more lifecycle methods
 - state management (redux / flux)
 - responsive design: different layout for mobile (2D)
 - https://react-bootstrap.github.io
 - scale more than 1 property
 - https://github.com/vlad-ignatov/react-numeric-input
+- tests
