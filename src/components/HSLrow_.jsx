@@ -7,41 +7,43 @@ import '../styles/HSLrow_.css';
 
 class HSLrow extends Component {
     render() {
+        let {row, HSL1, HSL2, onChangeHSL1, onChangeHSL2, activeHval, activehsl} = this.props;
+
         return (
             <div className="HSLrow">
                 <div className="pointerRow">
-                    <Pointer pType="down" HSL={this.props.HSL1}/>
+                    <Pointer pType="down" HSL={HSL1}/>
                 </div>
 
-                <div className="row colorBarRow" row={this.props.row} >
-                    <div className="label">{this.props.row}&nbsp;&nbsp;</div>
+                <div className="row colorBarRow" row={row} >
+                    <div className="label">{row}&nbsp;&nbsp;</div>
                     <InputBox 
-                        row={this.props.row}
-                        defaultValue={this.props.HSL1}
-                        onChange={this.props.onChangeHSL1}
+                        row={row}
+                        defaultValue={HSL1}
+                        onChange={onChangeHSL1}
                         //TODO: too many properties with the same value -> choose one
-                        name={`${this.props.row}1`}
-                        id={`${this.props.row}1`}/>
+                        name={`${row}1`}
+                        id={`${row}1`}/>
 
                     <ColorBar
-                        row={this.props.row}
-                        activeHval={this.props.activeHval}
-                        activehsl={this.props.activehsl}
-                        HSL1={this.props.HSL1}
-                        HSL2={this.props.HSL2}/>
+                        row={row}
+                        activeHval={activeHval}
+                        activehsl={activehsl}
+                        HSL1={HSL1}
+                        HSL2={HSL2}/>
                     
                     <InputBox 
-                        row={this.props.row}
-                        defaultValue={this.props.HSL2}
-                        onChange={this.props.onChangeHSL2}
+                        row={row}
+                        defaultValue={HSL2}
+                        onChange={onChangeHSL2}
                         //TODO: too many properties with the same value -> choose one
-                        name={`${this.props.row}2`}
-                        id={`${this.props.row}2`}
-                        visibility={this.props.row===this.props.activehsl ? "" : "hidden"}/>
+                        name={`${row}2`}
+                        id={`${row}2`}
+                        visibility={row===activehsl ? "" : "hidden"}/>
                 </div>
 
                 <div className="pointerRow">
-                    <Pointer pType="up" HSL={this.props.HSL2} visibility={this.props.row===this.props.activehsl ? "" : "hidden"}/>
+                    <Pointer pType="up" HSL={HSL2} visibility={row===activehsl ? "" : "hidden"}/>
                 </div>
             </div>
         );
