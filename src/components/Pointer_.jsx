@@ -7,8 +7,9 @@ class Pointer extends Component {
         return (
             <div 
                 className={`pointer${this.props.pType}`}
-                type={this.props.pType}>
-                <div>{this.props.HSL}<i className={`fa-caret-${this.props.pType}`}/></div>
+                type={this.props.pType}
+                style={{visibility: `${this.props.visibility}`}}>
+                <div>{this.props.HSL}<i className={`fa-caret-${this.props.pType}`} style={{visibility: `${this.props.visibility}`}}/></div>
             </div>
         );
     }
