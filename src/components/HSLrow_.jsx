@@ -12,7 +12,7 @@ class HSLrow extends Component {
         return (
             <div className="HSLrow">
                 <div className="pointerRow">
-                    <Pointer pType="down" HSL={HSL1}/>
+                    <Pointer pType="down" HSL={HSL1} row={row}/>
                 </div>
 
                 <div className="row colorBarRow" row={row} >
@@ -43,7 +43,7 @@ class HSLrow extends Component {
                 </div>
 
                 <div className="pointerRow">
-                    <Pointer pType="up" HSL={HSL2} visibility={row===activehsl ? "" : "hidden"}/>
+                    <Pointer pType="up" HSL={HSL2} visibility={row===activehsl ? "" : "hidden"} row={row}/>
                 </div>
             </div>
         );
