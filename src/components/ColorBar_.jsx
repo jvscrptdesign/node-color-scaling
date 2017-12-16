@@ -36,8 +36,7 @@ class ColorBar extends Component {
 
     render() {
         return (
-                <canvas id={this.props.row} row={this.props.row}>
-                download a modern browser</canvas>
+            <canvas id={this.props.row} row={this.props.row}>download a modern browser</canvas>
         );
     }
 }
