@@ -3,28 +3,18 @@ import PropTypes from 'prop-types';
 import ColorBar from './ColorBar_.jsx';
 import InputBox from './InputBox_.jsx';
 import Pointer from './Pointer_.jsx';
+import '../styles/HSLrow_.css';
 
 class HSLrow extends Component {
     render() {
-        let inputSpace = {
-            width:'75px'   
-        }
-        let label = {
-            height:'25px',
-            paddingTop:'2px'
-        }
-        let shrinkRow = {
-            height: '26px'
-        }
-
         return (
-            <div>
+            <div className="HSLrow">
                 <div className="pointerRow">
                     <Pointer pType="down" HSL={this.props.HSL1}/>
                 </div>
 
-                <div className="row" row={this.props.row} style={shrinkRow}>
-                    <div style={label}>{this.props.row}&nbsp;&nbsp;</div>
+                <div className="row colorBarRow" row={this.props.row} >
+                    <div className="label">{this.props.row}&nbsp;&nbsp;</div>
                     <InputBox 
                         row={this.props.row}
                         defaultValue={this.props.HSL1}
