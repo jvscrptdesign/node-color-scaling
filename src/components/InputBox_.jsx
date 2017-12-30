@@ -11,7 +11,6 @@ class InputBox extends Component {
                 type="number" 
                 min="0"
                 max={row==='H' ? 360 : 100}
-                row={row}
                 defaultValue={defaultValue}
                 onChange={onChange}
                 //TODO: too many properties with the same value -> choose one
