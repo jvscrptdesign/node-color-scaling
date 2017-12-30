@@ -6,7 +6,7 @@
     - click on the scale button to disable H, S, L buttons at the top, and also to disable the second pointer; 
     - click on either H, S or L button, which gives you access to the second pointer to set the range of the selected attr.
 
-![alt text](https://i.imgur.com/cMy9tt4.png)
+![alt text](https://imgur.com/dfgeOp7)
 
 #### TODO:
 - simplify the current architecture
