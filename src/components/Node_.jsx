@@ -8,9 +8,7 @@ class Node extends Component {
             backgroundColor: `hsl(${this.props.h}, ${this.props.s}%, ${this.props.l}%)`
         }
         return (
-            <div 
-                className="node row" 
-                style={style}></div>
+            <div className="node row" style={style}></div>
         );
     }
 }
