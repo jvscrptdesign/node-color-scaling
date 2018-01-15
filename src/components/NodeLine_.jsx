@@ -39,7 +39,7 @@ class NodeLine extends Component {
     buildNodeLine() {
         let { H1, S1, L1, activehsl } = this.props;
 
-        var nodes = [];
+        let nodes = [];
         for (var i = 0; i <= this.state.numOfNodes; i++) {
             nodes.push(<Node 
                 h={activehsl==='H' ? this.getH(i) : H1} 
