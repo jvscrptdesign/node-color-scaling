@@ -9,42 +9,26 @@ class NodeLine extends Component {
         this.state = {
             numOfNodes: 14
         }
-        this.getH = this.getH.bind(this);
-        this.getS = this.getS.bind(this);
-        this.getL = this.getL.bind(this);
+        this.getHSL = this.getHSL.bind(this);
         this.buildNodeLine = this.buildNodeLine.bind(this);
     }
-    //TODO: recognize HSL btn, and scale/set btn changes
-    getH(i) {
-        let hRange = this.props.H2 - this.props.H1,
-            hAvg = hRange / this.state.numOfNodes;
 
-        return this.props.H1 + hAvg * i;
+    getHSL(HSL1, HSL2, i) {
+        let range = HSL2 - HSL1,
+            avg = range / this.state.numOfNodes;
+
+        return HSL1 + avg * i;
     }
 
-    getS(i) {
-        let sRange = this.props.S2 - this.props.S1,
-            sAvg = sRange / this.state.numOfNodes;
-
-        return this.props.S1 + sAvg * i;
-    }
-
-    getL(i) {
-        let lRange = this.props.L2 - this.props.L1,
-            lAvg = lRange / this.state.numOfNodes;
-
-        return this.props.L1 + lAvg * i;
-    }
-
-    buildNodeLine() {
-        let { H1, S1, L1, activehsl } = this.props;
+    buildNodeLine() {      
+        let { H1, H2, S1, S2, L1, L2, activehsl } = this.props;
 
         let nodes = [];
-        for (var i = 0; i <= this.state.numOfNodes; i++) {
+        for (let i = 0; i <= this.state.numOfNodes; i++) {
             nodes.push(<Node 
-                h={activehsl==='H' ? this.getH(i) : H1} 
-                s={activehsl==='S' ? this.getS(i) : S1} 
-                l={activehsl==='L' ? this.getL(i) : L1} key={`node_${i}`} />);
+                h={activehsl==='H' ? this.getHSL(H1, H2, i) : H1} 
+                s={activehsl==='S' ? this.getHSL(S1, S2, i) : S1} 
+                l={activehsl==='L' ? this.getHSL(L1, L2, i) : L1} key={`node_${i}`} />);
         }
         return nodes;
     }
