@@ -7,7 +7,7 @@ class ColorBar extends Component {
         super(props);
     }
 
-    mountColorBar = activeHval {
+    mountColorBar = activeHval => {
         const elem = document.getElementById(this.props.row);
         const ctx = elem.getContext("2d");
         const grd = ctx.createLinearGradient(0, 0, elem.width, 0);
