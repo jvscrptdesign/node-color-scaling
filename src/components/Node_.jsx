@@ -1,16 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import '../styles/node_.css';
 
-class Node extends Component {
-    render() {
-        let style = {
-            backgroundColor: `hsl(${this.props.h}, ${this.props.s}%, ${this.props.l}%)`
-        }
-        return (
-            <div className="node row" style={style}></div>
-        );
+const Node = ({h, s, l}) => {
+    let style = {
+        backgroundColor: `hsl(${h}, ${s}%, ${l}%)`
     }
+    return (
+        <div className="node row" style={style}></div>
+    );
 }
 
 Node.propTypes = {
