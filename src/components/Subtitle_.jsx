@@ -2,25 +2,23 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from './Button_.jsx';
 
-class Subtitle extends Component {
-    render() {
-        return (
-            <div className="row subtitle" activehsl={this.props.activehsl}>
-                <Button 
-                    text={this.props.isModeScale ? 'Scale' : 'Set'} 
-                    btnActive={this.props.isModeScale} 
-                    btntype="big" 
-                    onClick={this.props.scaleSetToggle} 
-                    id="ScaleSet"/>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <Button text='H' btnActive={this.props.activehsl==='H'} btntype="small" onClick={this.props.clickH} id="H"/>
-                <Button text='S' btnActive={this.props.activehsl==='S'} btntype="small" onClick={this.props.clickS} id="S"/>
-                <Button text='L' btnActive={this.props.activehsl==='L'} btntype="small" onClick={this.props.clickL} id="L"/>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                values
-            </div>
-        );
-    }
+const Subtitle = ({activehsl, isModeScale, scaleSetToggle, clickH, clickS, clickL}) => {
+    return (
+        <div className="row subtitle" activehsl={activehsl}>
+            <Button 
+                text={isModeScale ? 'Scale' : 'Set'} 
+                btnActive={isModeScale} 
+                btntype="big" 
+                onClick={scaleSetToggle} 
+                id="ScaleSet"/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <Button text='H' btnActive={activehsl==='H'} btntype="small" onClick={clickH} id="H"/>
+            <Button text='S' btnActive={activehsl==='S'} btntype="small" onClick={clickS} id="S"/>
+            <Button text='L' btnActive={activehsl==='L'} btntype="small" onClick={clickL} id="L"/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            values
+        </div>
+    );
 }
 
 Button.propTypes = {
