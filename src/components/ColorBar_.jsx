@@ -5,11 +5,9 @@ import '../styles/colorBar_.css';
 class ColorBar extends Component {
     constructor(props) {
         super(props);
-        this.mountColorBar = this.mountColorBar.bind(this);
-        this.styleColorBar = this.styleColorBar.bind(this);
     }
 
-    mountColorBar(activeHval) {
+    mountColorBar = activeHval {
         const elem = document.getElementById(this.props.row);
         const ctx = elem.getContext("2d");
         const grd = ctx.createLinearGradient(0, 0, elem.width, 0);
@@ -20,7 +18,7 @@ class ColorBar extends Component {
         ctx.fillRect(0, 0, elem.width, elem.height);
     }
 
-    styleColorBar(grd, type, activeHval) {
+    styleColorBar = (grd, type, activeHval) => {
         for(var i=0; i<=1; i+=0.01){
             grd.addColorStop(i, `hsl(${type==='H' ? 360*i : activeHval},${type==='S' ? 100*i : 100}%,${type==='L' ? 100*i : 50}%)`);
         }
