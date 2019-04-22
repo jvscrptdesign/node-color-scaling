@@ -6,21 +6,20 @@ import '../styles/nodeLine_.css';
 class NodeLine extends Component {
     constructor(props) {
         super(props);
+        //pointless, only for practical purpose -> can SFC
         this.state = {
             numOfNodes: 14
         }
-        this.getHSL = this.getHSL.bind(this);
-        this.buildNodeLine = this.buildNodeLine.bind(this);
     }
 
-    getHSL(HSL1, HSL2, i) {
+    getHSL = (HSL1, HSL2, i) => {
         let range = HSL2 - HSL1,
             avg = range / this.state.numOfNodes;
 
         return HSL1 + avg * i;
     }
 
-    buildNodeLine() {      
+    buildNodeLine = () => {      
         let { H1, H2, S1, S2, L1, L2, activehsl } = this.props;
 
         let nodes = [];
