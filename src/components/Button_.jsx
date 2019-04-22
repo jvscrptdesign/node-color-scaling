@@ -1,22 +1,19 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import '../styles/button_.css';
 
-class Button extends Component {
-    render() {
-        let {btnActive, btntype, onClick, text} = this.props;
-        let isActive = btnActive ? "btnActive" : "btnDefault";
-        let btnType = btntype==="big" ? "btnBig" : "btnSmall";
+const Button = ({btnActive, btntype, onClick, text}) => {
+    let isActive = btnActive ? "btnActive" : "btnDefault";
+    let btnType = btntype==="big" ? "btnBig" : "btnSmall";
 
-        return (
-            <div className="buttonWrapper">
-                <div 
-                    className={`btn_ ${isActive} ${btnType}`}
-                    btntype={btntype}
-                    onClick={onClick}>{text}</div>
-            </div>
-        );
-    }
+    return (
+        <div className="buttonWrapper">
+            <div 
+                className={`btn_ ${isActive} ${btnType}`}
+                btntype={btntype}
+                onClick={onClick}>{text}</div>
+        </div>
+    );
 }
 
 Button.propTypes = {
