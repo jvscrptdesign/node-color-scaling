@@ -1,10 +1,11 @@
 # Node color scaling submenu
 - this is a submenu of a larger app, where you can set a color range for nodes in your graph
-- this React application was built by using create-react-app. More info [here](https://github.com/facebookincubator/create-react-app)
-    in command line, type:
+- this React application was built by using create-react-app. More info [here](https://github.com/facebookincubator/create-react-app). 
+    After installing the package, to start the application, you need to type the following in the command line to get the dependencies
     1) npx create-react-app my-app
     2) cd my-app
     3) npm start
+    4) copy project files
 - node-color-scaling.html is an older (HTML/CSS/JS) version
 - currently you can:
     - click on the scale button to disable H, S, L buttons at the top, and also to disable the second pointer; 
